@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 3rem;
+        font-family: arial;
+        letter-spacing: 1px;
+      }
+
+      input {
+        height: 30px;
+        width: 200px;
+        font-size: 20px;
+      }
+
+      .error {
+        color: red;
+      }
+    </style>
+    <title>Dodaj pokuj</title>
+  </head>
+  <body>
+    <h1>Podaj nazwe pokoju</h1>
+    <input type="text" placeholder="Napisz nazwe" />
+
+    <script>
+      document.querySelector("input").onchange = async (e) => {
+        const roomId = e.target.value;
+
+        const payload = {
+          name: roomId,
+        };
+
+        // wysłanie do api żądania o stworzenie pokoju
+        const response = await fetch("http://localhost:3000/room/make", {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const rooms = JSON.parse(localStorage.getItem("rooms"));
+
+        // jeśli użytkownik już ma jakieś pokoje to dodaj do tych pokojów
+        // jeśli nie to stwórz obiekt "rooms" i dodaj do niego pokój
+        if (rooms) {
+          rooms.push({ name: roomId });
+          localStorage.setItem("rooms", JSON.stringify(rooms));
+        } else {
+          localStorage.setItem("rooms", JSON.stringify([{ name: roomId }]));
+        }
+
+        // przekieruj użytkownika do strony czatu
+        window.location.href = "../chat/chat.html?id=" + roomId;
+      };
+    </script>
+  </body>
+</html>
