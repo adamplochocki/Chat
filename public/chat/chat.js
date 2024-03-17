@@ -1,11 +1,19 @@
-// zaimportój bibliotekę do ułatwienia obsługi protokołu websockets
+// zimportój bibliotekę do ułatwienia obsługi protokołu websockets
 import { io } from "https://cdn.socket.io/4.7.4/socket.io.esm.min.js";
+import { getUserId } from "../../utils/acc_client.js";
+
+const uid = getUserId();
+if (uid == "" || uid == undefined) {
+  window.location.href = "../accounts/login.html";
+}
 
 // rozpocznij pobieranie wiadomości pokoju z bazy danych
 getMessages();
 
 // połącz się z serwerem websocket
-const socket = io("ws://localhost:3000?id=" + roomId);
+const socket = io(`wss://shoppinglist-lb7q.onrender.com?id=${roomId}`, {
+  transports: ["websocket"],
+});
 
 // utwórz słuchacza dla wydarzenia "message" w websocket
 socket.on("message", (mess) => {
@@ -16,25 +24,27 @@ socket.on("message", (mess) => {
 document.querySelector("input").onchange = sendMessage;
 
 function sendMessage(e) {
+  if (e.target.value == "" || e.target.value == undefined) return;
+
   const message = {
     body: e.target.value,
+    user: uid,
   };
 
   // wyślij wiadomość do innych użytkowników w pokoju
   socket.send(JSON.stringify(message));
 
-  // pokaż wiadomość którą wysłał użytkownik
-  showMessage(message);
+  e.target.value = "";
 }
 
 async function getMessages() {
   // wyślij żądanie do API
   const response = await fetch(
-    `http://localhost:3000/room/${roomId}/messages/get`
+    `https://shoppinglist-lb7q.onrender.com/room/${roomId}/messages/get`
   );
 
   // jeśli API odpowie kodem 400 to znaczy że niema waidomości więc kończymy życie funkcji
-  if (response.status == 400) {
+  if (response.status == 100) {
     return;
   }
 
@@ -52,7 +62,10 @@ function showMessage(message) {
   const messElement = document.createElement("div");
   messElement.classList.add("message");
 
-  messElement.innerHTML = `<p>${message.body}</p>`;
+  messElement.innerHTML = `
+    <span>${message.user}</span>
+    <p>${message.body}</p>
+  `;
 
   // wyświetl element wiadomości
   document.querySelector("#messages").appendChild(messElement);
