@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const roomId = urlParams.get("id");
+
+      if (roomId == "" || roomId == undefined) {
+        window.location.href = "../main/index.html";
+      }
+
+      document.title = "Chat " + roomId;
+    </script>
+    <link rel="stylesheet" href="chat.css" />
+    <title>Chat</title>
+  </head>
+  <body>
+    <div id="container">
+      <div id="messages"></div>
+      <div id="toolbar">
+        <input type="text" maxlength="300" placeholder="Napisz wiadomosc" />
+        <span></span>
+      </div>
+    </div>
+    <script src="chat.js" type="module"></script>
+  </body>
+</html>

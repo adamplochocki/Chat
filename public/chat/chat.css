@@ -1,0 +1,86 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+#container {
+  height: 100%;
+  width: 100%;
+  background-color: rgb(42, 41, 53);
+}
+
+#messages {
+  padding-top: 10px;
+  height: 90%;
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.message {
+  min-height: 30px;
+  width: 95%;
+}
+
+.message span {
+  color: white;
+  font-family: arial;
+  letter-spacing: 1px;
+}
+
+.message p {
+  font-family: arial;
+  color: white;
+  margin: 0;
+  font-size: 1.5rem;
+  padding: 10px;
+  word-wrap: break-word;
+  background-color: rgb(57, 63, 82);
+  border-radius: 5px;
+}
+
+#toolbar {
+  height: 9%;
+  border: none;
+  border-top: solid white 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+#toolbar input {
+  background-color: rgb(69, 72, 88);
+  border-radius: 7px;
+  overflow: hidden;
+  overflow-x: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+  border: none;
+  outline: none;
+  height: 70%;
+  width: 90%;
+  font-size: 2.2rem;
+  color: white;
+}
+
+#toolbar span {
+  width: 5%;
+  background: no-repeat center/2rem url("../icons/paper.png");
+  background-color: #191f2a;
+  filter: brightness(2);
+  height: 65%;
+  border-radius: 7px;
+  transition: transform 0.15s;
+}
+
+#toolbar span:active {
+  transform: translateX(15px);
+}
